@@ -1,3 +1,5 @@
+## [Demo](https://hamzaerbay.github.io/react-content-slider/)
+
 # React Content Slider experiment
 Based on [React starter kit](https://github.com/hamzaerbay/react-starter-kit)
 
