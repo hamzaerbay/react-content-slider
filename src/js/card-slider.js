@@ -27,11 +27,17 @@ export default class CardSlider extends Component {
       isLoading: true,
       imageData: [],
     };
+    this.listenKeyPress = this.listenKeyPress.bind(this);
   }
 
   componentDidMount() {
     this.init();
     this.fetchAll();
+    document.addEventListener('keydown', this.listenKeyPress, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.listenKeyPress, false);
   }
 
   // drone capture, aerial capture
@@ -54,6 +60,14 @@ export default class CardSlider extends Component {
       .catch((error) => {
         throw new Error(error);
       });
+  }
+
+  listenKeyPress(e) {
+    if (e.keyCode === 40 || e.keyCode === 39) {
+      this.nextClick(e);
+    } else if (e.keyCode === 38 || e.keyCode === 37) {
+      this.prevClick(e);
+    }
   }
 
   init() {
