@@ -5,7 +5,7 @@ import {
 } from 'gsap';
 import Card from './card';
 import { config } from './lib/config';
-import Loader from './loader';
+import Loader from './components/loader';
 
 export default class CardSlider extends Component {
   constructor(props) {
