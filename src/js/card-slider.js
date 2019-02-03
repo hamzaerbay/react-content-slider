@@ -3,9 +3,10 @@ import $ from 'jquery';
 import {
   TweenMax, Power3, TimelineLite, Linear,
 } from 'gsap';
-import Card from './card';
+import Card from './components/card';
 import { config } from './lib/config';
-import Loader from './loader';
+import Loader from './components/loader';
+import Navigation from './components/navigation';
 
 export default class CardSlider extends Component {
   constructor(props) {
@@ -21,8 +22,10 @@ export default class CardSlider extends Component {
     this.slideNavNext = $('#next');
     this.searchQuery = [
       'drone-capture', 'aerial-capture', 'industrial', 'building', 'construction', 'architecture', 'drone-view',
-      'travel',
+      'travel', 'portrait', 'fight', 'san-francisco', 'new-york', 'turkey', 'japan', 'korea', 'spain', 'india',
+      'thailand',
     ];
+    this.selectedKeyword = Math.floor(Math.random() * this.searchQuery.length);
     this.state = {
       isLoading: true,
       imageData: [],
@@ -42,14 +45,14 @@ export default class CardSlider extends Component {
 
   // drone capture, aerial capture
   fetchAll() {
-    const randomQuery = Math.floor(Math.random() * this.searchQuery.length);
     fetch(
       `https://api.unsplash.com/search/photos/?client_id=${
         config.APPLICATION_ID
-      }&query=${this.searchQuery[randomQuery]}&orientation=portrait`,
+      }&query=${this.searchQuery[this.selectedKeyword]}&orientation=portrait`,
     )
       .then((res) => {
         if (res.ok) {
+          console.log('search keyword:', this.searchQuery[this.selectedKeyword]);
           return res.json();
         }
         throw new Error(res.status);
@@ -77,10 +80,10 @@ export default class CardSlider extends Component {
 
   nextSlide(slideOut, slideIn, slideInAll) {
     const t1 = new TimelineLite();
-    const slideOutContent = slideOut.find('.card-content');
-    const slideInContent = slideIn.find('.card-content');
-    const slideOutImg = slideOut.find('.card-img');
-    const slideInImg = slideIn.find('.card-img');
+    const slideOutContent = slideOut.find('[data-purpose="card-content"]');
+    const slideInContent = slideIn.find('[data-purpose="card-content"]');
+    const slideOutImg = slideOut.find('[data-purpose="card-img"]');
+    const slideInImg = slideIn.find('[data-purpose="card-img"]');
     const index = slideIn.index();
     const size = this.homeSlide.length;
     if (slideIn.length !== 0) {
@@ -110,10 +113,10 @@ export default class CardSlider extends Component {
 
   prevSlide(slideOut, slideIn, slideInAll) {
     const t1 = new TimelineLite();
-    const slideOutContent = slideOut.find('.card-content');
-    const slideInContent = slideIn.find('.card-content');
-    const slideOutImg = slideOut.find('.card-img');
-    const slideInImg = slideIn.find('.card-img');
+    const slideOutContent = slideOut.find('[data-purpose="card-content"]');
+    const slideInContent = slideIn.find('[data-purpose="card-content"]');
+    const slideOutImg = slideOut.find('[data-purpose="card-img"]');
+    const slideInImg = slideIn.find('[data-purpose="card-img"]');
     const index = slideIn.index();
     if (slideIn.length !== 0) {
       t1.set(slideIn, { autoAlpha: 1, className: '+=active' })
@@ -166,10 +169,7 @@ export default class CardSlider extends Component {
         {imageData.map((item, index) => (
           <Card key={item.id} item={item} isActive={index === 0 ? 'active' : ''} />
         ))}
-        <div className="prevnext">
-          <button type="button" className="pn-btn" id="prev" onClick={this.prevClick} />
-          <button type="button" className="pn-btn" id="next" onClick={this.nextClick} />
-        </div>
+        <Navigation prevClick={this.prevClick} nextClick={this.nextClick} />
       </div>
     );
   }
