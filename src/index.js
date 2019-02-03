@@ -5,10 +5,6 @@ import themeVariables from 'sass-extract-loader?{"plugins": ["sass-extract-js"]}
 import CardSlider from './js/card-slider';
 import './sass/style.scss';
 
-// const themeVariables = require('sass-extract-loader?{"plugins": ["sass-extract-js"]}!./sass/variables.scss');
-
-
-console.log('theme', themeVariables);
 const App = () => (
   <ThemeProvider theme={themeVariables}>
     <CardSlider />
