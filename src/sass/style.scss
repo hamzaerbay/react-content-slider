@@ -14,77 +14,6 @@ body {
 	font-family: 'Poppins', sans-serif;
 }
 
-.slide {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-	flex-direction: column;
-	width: 100%;
-	height: 100%;
-}
-
-.card {
-	width: 100%;
-	height: 100vh;
-	display: flex;
-}
-
-.card-img {
-	background-position: center;
-	width: 50%;
-	height: 100%;
-	background-size: cover;
-	background-repeat: no-repeat;
-}
-
-.card-content {
-	padding: 10% 5%;
-	box-sizing: border-box;
-	width: 50%;
-	background-color: $color-midnight;
-	transition: background-color .3s ease-in-out;
-}
-
-.card-theme {
-	font-weight: 900;
-	font-size: 1.7vmin;
-	text-transform: uppercase;
-	letter-spacing: 10px;
-	color: $color-rain-dark;
-}
-
-.card-header {
-	font-weight: 700;
-	font-size: 54px;
-	text-transform: capitalize;
-	line-height: 1.16;
-	margin: 3vmin 0 3.5vmin;
-	color: $color-white;
-}
-
-.card-para {
-	font-size: 1.6vmin;
-	line-height: 1.8;
-	font-weight: 300;
-	margin-bottom: 2.5vmin;
-	color: $color-white;
-	text-transform: capitalize;
-}
-
-.card-link {
-	color: $color-white;
-	font-size: 1.8vmin;
-	display: block;
-	opacity: 0.7;
-	transition: opacity 0.3s ease-in-out;
-	text-decoration: none;
-
-	&:after {
-		content: ' →';
-	}
-}
-
 .prevnext {
 	position: absolute;
 	width: 4vmin;
@@ -94,15 +23,6 @@ body {
 	top: 80%;
 	color: $color-white;
 	margin: auto 0;
-}
-
-.pn-btn {
-	color: $color-white;
-	width: 100%;
-	height: 50%;
-	border: 0;
-	background: transparent;
-	font-size: 20px;
 }
 
 #prev,
@@ -145,52 +65,6 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
-	.card {
-		flex-direction: column;
-	}
-
-	.card-img {
-		width: 100%;
-		height: 55%;
-	}
-
-	.card-content {
-		width: 100%;
-		position: relative;
-		height: 45%;
-		padding: 5% 8% 5% 5%;
-
-		&:before {
-			content: '';
-			height: 38px;
-			width: 100%;
-			position: absolute;
-			top: -15px;
-			z-index: 2;
-			left: 0;
-			transform: skew(0, 4deg); 
-			background-color: $color-midnight;
-		}
-	}
-
-	.card-header {
-		font-size: 30px;
-	}
-
-	.card-para {
-		font-size: 2.6vmin;
-		line-height: 1.5;
-	}
-
-	.card-theme {
-		font-size: 4vmin;
-		letter-spacing: 8px;
-	}
-
-	.card-link {
-		font-size: 3vmin;
-	}
-
 	.prevnext {
 		width: 11vmin;
 		height: 22vmin;
