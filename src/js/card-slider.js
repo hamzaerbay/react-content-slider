@@ -6,6 +6,7 @@ import {
 import Card from './components/card';
 import { config } from './lib/config';
 import Loader from './components/loader';
+import Navigation from './components/navigation';
 
 export default class CardSlider extends Component {
   constructor(props) {
@@ -168,10 +169,7 @@ export default class CardSlider extends Component {
         {imageData.map((item, index) => (
           <Card key={item.id} item={item} isActive={index === 0 ? 'active' : ''} />
         ))}
-        <div className="prevnext">
-          <button type="button" className="pn-btn" id="prev" onClick={this.prevClick} />
-          <button type="button" className="pn-btn" id="next" onClick={this.nextClick} />
-        </div>
+        <Navigation prevClick={this.prevClick} nextClick={this.nextClick} />
       </div>
     );
   }
