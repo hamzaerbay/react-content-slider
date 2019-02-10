@@ -14,6 +14,7 @@ export default class CardSlider extends Component {
     this.init = this.init.bind(this);
     this.prevClick = this.prevClick.bind(this);
     this.nextClick = this.nextClick.bind(this);
+    this.enableNav = this.enableNav.bind(this);
 
     this.activeSlide = $('.active');
     this.homeSlide = $('.slide');
@@ -22,6 +23,7 @@ export default class CardSlider extends Component {
     this.state = {
       isLoading: true,
       imageData: [],
+      navEvent: true,
     };
     this.UnsplashAPI = new UnsplashAPI();
     this.listenKeyPress = this.listenKeyPress.bind(this);
@@ -55,8 +57,14 @@ export default class CardSlider extends Component {
     TweenMax.set(this.slideNavPrev, { autoAlpha: 0.2 });
   }
 
+  enableNav() {
+    this.setState({ navEvent: true });
+  }
+
   nextSlide(slideOut, slideIn, slideInAll) {
-    const t1 = new TimelineLite();
+    const t1 = new TimelineLite({
+      onComplete: () => this.enableNav(),
+    });
     const slideOutContent = slideOut.find('[data-purpose="card-content"]');
     const slideInContent = slideIn.find('[data-purpose="card-content"]');
     const slideOutImg = slideOut.find('[data-purpose="card-img"]');
@@ -89,7 +97,9 @@ export default class CardSlider extends Component {
   }
 
   prevSlide(slideOut, slideIn, slideInAll) {
-    const t1 = new TimelineLite();
+    const t1 = new TimelineLite({
+      onComplete: () => this.enableNav(),
+    });
     const slideOutContent = slideOut.find('[data-purpose="card-content"]');
     const slideInContent = slideIn.find('[data-purpose="card-content"]');
     const slideOutImg = slideOut.find('[data-purpose="card-img"]');
@@ -122,18 +132,24 @@ export default class CardSlider extends Component {
 
   prevClick(e) {
     e.preventDefault();
-    const slideOut = $('.slide.active');
-    const slideIn = $('.slide.active').prev('.slide');
-    const slideInAll = $('.slide');
-    this.prevSlide(slideOut, slideIn, slideInAll);
+    if (this.state.navEvent) {
+      this.setState({ navEvent: false });
+      const slideOut = $('.slide.active');
+      const slideIn = $('.slide.active').prev('.slide');
+      const slideInAll = $('.slide');
+      this.prevSlide(slideOut, slideIn, slideInAll);
+    }
   }
 
   nextClick(e) {
     e.preventDefault();
-    const slideOut = $('.slide.active');
-    const slideIn = $('.slide.active').next('.slide');
-    const slideInAll = $('.slide');
-    this.nextSlide(slideOut, slideIn, slideInAll);
+    if (this.state.navEvent) {
+      this.setState({ navEvent: false });
+      const slideOut = $('.slide.active');
+      const slideIn = $('.slide.active').next('.slide');
+      const slideInAll = $('.slide');
+      this.nextSlide(slideOut, slideIn, slideInAll);
+    }
   }
 
   render() {
