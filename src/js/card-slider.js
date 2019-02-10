@@ -4,9 +4,9 @@ import {
   TweenMax, Power3, TimelineLite, Linear,
 } from 'gsap';
 import Card from './components/card';
-import { config } from './lib/config';
 import Loader from './components/loader';
 import Navigation from './components/navigation';
+import UnsplashAPI from './api/UnsplashAPI';
 
 export default class CardSlider extends Component {
   constructor(props) {
@@ -14,55 +14,34 @@ export default class CardSlider extends Component {
     this.init = this.init.bind(this);
     this.prevClick = this.prevClick.bind(this);
     this.nextClick = this.nextClick.bind(this);
-    this.fetchAll = this.fetchAll.bind(this);
+    this.enableNav = this.enableNav.bind(this);
 
     this.activeSlide = $('.active');
     this.homeSlide = $('.slide');
     this.slideNavPrev = $('#prev');
     this.slideNavNext = $('#next');
-    this.searchQuery = [
-      'drone-capture', 'aerial-capture', 'industrial', 'building', 'construction', 'architecture', 'drone-view',
-      'travel', 'portrait', 'fight', 'san-francisco', 'new-york', 'turkey', 'japan', 'korea', 'spain', 'india',
-      'thailand',
-    ];
-    this.selectedKeyword = Math.floor(Math.random() * this.searchQuery.length);
     this.state = {
       isLoading: true,
       imageData: [],
+      navEvent: true,
     };
+    this.UnsplashAPI = new UnsplashAPI();
     this.listenKeyPress = this.listenKeyPress.bind(this);
   }
 
   componentDidMount() {
     this.init();
-    this.fetchAll();
+    this.UnsplashAPI.searchResult().then((items) => {
+      this.setState({ isLoading: false, imageData: items.results });
+    })
+      .catch((error) => {
+        throw new Error(error);
+      });
     document.addEventListener('keydown', this.listenKeyPress, false);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.listenKeyPress, false);
-  }
-
-  // drone capture, aerial capture
-  fetchAll() {
-    fetch(
-      `https://api.unsplash.com/search/photos/?client_id=${
-        config.APPLICATION_ID
-      }&query=${this.searchQuery[this.selectedKeyword]}&orientation=portrait`,
-    )
-      .then((res) => {
-        if (res.ok) {
-          console.log('search keyword:', this.searchQuery[this.selectedKeyword]);
-          return res.json();
-        }
-        throw new Error(res.status);
-      })
-      .then((items) => {
-        this.setState({ isLoading: false, imageData: items.results });
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
   }
 
   listenKeyPress(e) {
@@ -78,8 +57,14 @@ export default class CardSlider extends Component {
     TweenMax.set(this.slideNavPrev, { autoAlpha: 0.2 });
   }
 
+  enableNav() {
+    this.setState({ navEvent: true });
+  }
+
   nextSlide(slideOut, slideIn, slideInAll) {
-    const t1 = new TimelineLite();
+    const t1 = new TimelineLite({
+      onComplete: () => this.enableNav(),
+    });
     const slideOutContent = slideOut.find('[data-purpose="card-content"]');
     const slideInContent = slideIn.find('[data-purpose="card-content"]');
     const slideOutImg = slideOut.find('[data-purpose="card-img"]');
@@ -112,7 +97,9 @@ export default class CardSlider extends Component {
   }
 
   prevSlide(slideOut, slideIn, slideInAll) {
-    const t1 = new TimelineLite();
+    const t1 = new TimelineLite({
+      onComplete: () => this.enableNav(),
+    });
     const slideOutContent = slideOut.find('[data-purpose="card-content"]');
     const slideInContent = slideIn.find('[data-purpose="card-content"]');
     const slideOutImg = slideOut.find('[data-purpose="card-img"]');
@@ -145,18 +132,24 @@ export default class CardSlider extends Component {
 
   prevClick(e) {
     e.preventDefault();
-    const slideOut = $('.slide.active');
-    const slideIn = $('.slide.active').prev('.slide');
-    const slideInAll = $('.slide');
-    this.prevSlide(slideOut, slideIn, slideInAll);
+    if (this.state.navEvent) {
+      this.setState({ navEvent: false });
+      const slideOut = $('.slide.active');
+      const slideIn = $('.slide.active').prev('.slide');
+      const slideInAll = $('.slide');
+      this.prevSlide(slideOut, slideIn, slideInAll);
+    }
   }
 
   nextClick(e) {
     e.preventDefault();
-    const slideOut = $('.slide.active');
-    const slideIn = $('.slide.active').next('.slide');
-    const slideInAll = $('.slide');
-    this.nextSlide(slideOut, slideIn, slideInAll);
+    if (this.state.navEvent) {
+      this.setState({ navEvent: false });
+      const slideOut = $('.slide.active');
+      const slideIn = $('.slide.active').next('.slide');
+      const slideInAll = $('.slide');
+      this.nextSlide(slideOut, slideIn, slideInAll);
+    }
   }
 
   render() {
