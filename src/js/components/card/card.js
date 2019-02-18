@@ -13,7 +13,7 @@ const Card = ({ item, isActive }) => (
   // Should keep the className for animation.
   <Slide className={`slide ${isActive}`}>
     <Wrapper>
-      <Image image={item.urls.regular} data-purpose="card-img" />
+      <Image image={item.urls} />
       <Content data-color={item.color} data-purpose="card-content">
         <Tag>{item.tags[0] && item.tags[0].title}</Tag>
         <Title>{item.user.name}</Title>
