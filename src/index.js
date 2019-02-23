@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import themeVariables from 'sass-extract-loader?{"plugins": ["sass-extract-js"]}!./sass/variables.scss';
 import CardSlider from './js/card-slider';
 import './sass/style.scss';
+import 'intersection-observer';
 
 const App = () => (
   <ThemeProvider theme={themeVariables}>
