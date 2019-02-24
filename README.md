@@ -1,5 +1,7 @@
 ## [Demo](https://hamzaerbay.github.io/react-content-slider/)
 
+![contentSlider](https://media.giphy.com/media/XJoGFYUFM9VQzExnzC/giphy.gif)
+
 # React Content Slider experiment
 Based on [React starter kit](https://github.com/hamzaerbay/react-starter-kit)
 
