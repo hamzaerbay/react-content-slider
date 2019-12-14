@@ -29,6 +29,8 @@
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "react/forbid-prop-types": [0],
     "no-console": [0],
-    "react/destructuring-assignment": [0]
+    "react/destructuring-assignment": [0],
+    "import/no-webpack-loader-syntax": [0],
+    "import/no-unresolved": [0]
   }
 }
