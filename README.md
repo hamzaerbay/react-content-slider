@@ -6,7 +6,7 @@ Based on [React starter kit](https://github.com/hamzaerbay/react-starter-kit)
 ![contentSlider](https://media.giphy.com/media/XJoGFYUFM9VQzExnzC/giphy.gif)
 
 ## What's it all about?
-Build react version of [Codegrid's tutorial](https://www.youtube.com/watch?v=eh8MInLm2Hs) tutorial that using the unsplash API.
+Build react content slider that using the unsplash API.
 
 ### Install dependencies
 ```
